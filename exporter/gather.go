@@ -18,17 +18,23 @@ func (e *Exporter) gatherData() ([]*Datum, *RateLimits, error) {
 		return data, nil, err
 	}
 
-	for _, response := range responses {
+	for i, response := range responses {
 
 		// Github can at times present an array, or an object for the same data set.
 		// This code checks handles this variation.
 		if isArray(response.body) {
 			ds := []*Datum{}
 			json.Unmarshal(response.body, &ds)
-			data = append(data, ds...)
+			if ds[0].Language != "" {
+				data = append(data, ds...)
+			}
 		} else {
 			d := new(Datum)
 			json.Unmarshal(response.body, &d)
+			if d.Language != "" {
+				json.Unmarshal(responses[i+1].body, &d.Releases)
+				fmt.Printf("i=%+v", responses[i+1])
+			}
 			data = append(data, d)
 		}
 		log.Infof("API data fetched for %s: %+v", response.url, data)

@@ -37,6 +37,23 @@ type Datum struct {
 	OpenIssues float64 `json:"open_issues"`
 	Watchers   float64 `json:"subscribers_count"`
 	Size       float64 `json:"size"`
+	Releases   []Release
+}
+
+// Data is used to store an array of Datums.
+// This is useful for the JSON array detection
+type Releases []Release
+
+// Datum is used to store data from all the relevant endpoints in the API
+type Release struct {
+	TagName string  `json:"tag_name"`
+	Assets  []Asset `json:"assets"`
+}
+
+type Asset struct {
+	Name          string  `json:"name"`
+	Size          float64 `json:"size"`
+	DownloadCount float64 `json:"download_count"`
 }
 
 // RateLimits is used to store rate limit data into a struct

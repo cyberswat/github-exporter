@@ -51,10 +51,10 @@ func AddMetrics() map[string]*prometheus.Desc {
 		"The time at which the current rate limit window resets in UTC epoch seconds",
 		[]string{}, nil,
 	)
-	APIMetrics["Downloads"] = prometheus.NewDesc(
-		prometheus.BuildFQName("github", "repo", "downloads"),
-		"The current download_count for a repo.",
-		[]string{}, nil,
+	APIMetrics["Assets"] = prometheus.NewDesc(
+		prometheus.BuildFQName("github", "repo", "assets"),
+		"The repositories assets.",
+		[]string{"tag", "repo", "user", "name", "size"}, nil,
 	)
 
 	return APIMetrics
@@ -70,6 +70,11 @@ func (e *Exporter) processMetrics(data []*Datum, rates *RateLimits, ch chan<- pr
 		ch <- prometheus.MustNewConstMetric(e.APIMetrics["OpenIssues"], prometheus.GaugeValue, x.OpenIssues, x.Name, x.Owner.Login, strconv.FormatBool(x.Private), strconv.FormatBool(x.Fork), strconv.FormatBool(x.Archived), x.License.Key, x.Language)
 		ch <- prometheus.MustNewConstMetric(e.APIMetrics["Watchers"], prometheus.GaugeValue, x.Watchers, x.Name, x.Owner.Login, strconv.FormatBool(x.Private), strconv.FormatBool(x.Fork), strconv.FormatBool(x.Archived), x.License.Key, x.Language)
 		ch <- prometheus.MustNewConstMetric(e.APIMetrics["Size"], prometheus.GaugeValue, x.Size, x.Name, x.Owner.Login, strconv.FormatBool(x.Private), strconv.FormatBool(x.Fork), strconv.FormatBool(x.Archived), x.License.Key, x.Language)
+		for _, r := range x.Releases {
+			for _, a := range r.Assets {
+				ch <- prometheus.MustNewConstMetric(e.APIMetrics["Assets"], prometheus.GaugeValue, a.DownloadCount, r.TagName, x.Name, x.Owner.Login, a.Name, strconv.FormatFloat(a.Size, 'f', -1, 64))
+			}
+		}
 
 	}
 

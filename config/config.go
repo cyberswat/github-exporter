@@ -75,9 +75,10 @@ func getScrapeURLs(apiURL, repos, orgs, users string) ([]string, error) {
 		rs := strings.Split(repos, ", ")
 		for _, x := range rs {
 			y := fmt.Sprintf("%s/repos/%s%s", apiURL, x, opts)
-			//			r := fmt.Sprintf("%s/repos/%s/releases", apiURL, x)
 			urls = append(urls, y)
-			//			urls = append(urls, r)
+
+			r := fmt.Sprintf("%s/repos/%s/releases%s", apiURL, x, opts)
+			urls = append(urls, r)
 		}
 	}
 
