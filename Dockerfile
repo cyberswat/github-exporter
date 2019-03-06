@@ -4,8 +4,8 @@ LABEL maintainer "Infinity Works"
 RUN apk --no-cache add ca-certificates \
      && apk --no-cache add --virtual build-deps git
 
-COPY ./ /go/src/github.com/infinityworks/github-exporter
-WORKDIR /go/src/github.com/infinityworks/github-exporter
+COPY ./ /go/src/github.com/cyberswat/github-exporter
+WORKDIR /go/src/github.com/cyberswat/github-exporter
 
 RUN go get \
  && go test ./... \

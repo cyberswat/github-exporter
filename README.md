@@ -27,13 +27,13 @@ At least one of those 3 options should be provided.
 
 Run manually from Docker Hub:
 ```
-docker run -d --restart=always -p 9171:9171 -e REPOS="infinityworks/ranch-eye, infinityworks/prom-conf" infinityworks/github-exporter
+docker run -d --restart=always -p 9171:9171 -e REPOS="drud/ddev" cyberswat/github-exporter
 ```
 
 Build a docker image:
 ```
 docker build -t <image-name> .
-docker run -d --restart=always -p 9171:9171 -e REPOS="infinityworks/ranch-eye, infinityworks/prom-conf" <image-name>
+docker run -d --restart=always -p 9171:9171 -e REPOS="drud/ddev" <image-name>
 ```
 
 ## Docker compose
@@ -46,7 +46,7 @@ github-exporter:
       - 9171
     ports:
       - 9171:9171
-    image: infinityworks/github-exporter:latest
+    image: cyberswat/github-exporter:latest
     environment:
       - REPOS=<REPOS you want to monitor>
       - GITHUB_TOKEN=<your github api token>

@@ -10,7 +10,6 @@ import (
 
 // gatherData - Collects the data from the API and stores into struct
 func (e *Exporter) gatherData() ([]*Datum, *RateLimits, error) {
-
 	data := []*Datum{}
 
 	responses, err := asyncHTTPGets(e.TargetURLs, e.APIToken)
@@ -32,8 +31,7 @@ func (e *Exporter) gatherData() ([]*Datum, *RateLimits, error) {
 			json.Unmarshal(response.body, &d)
 			data = append(data, d)
 		}
-
-		log.Infof("API data fetched for repository: %s", response.url)
+		log.Infof("API data fetched for %s: %+v", response.url, data)
 	}
 
 	// Check the API rate data and store as a metric

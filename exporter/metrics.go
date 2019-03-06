@@ -1,7 +1,10 @@
 package exporter
 
-import "github.com/prometheus/client_golang/prometheus"
-import "strconv"
+import (
+	"strconv"
+
+	"github.com/prometheus/client_golang/prometheus"
+)
 
 // AddMetrics - Add's all of the metrics to a map of strings, returns the map.
 func AddMetrics() map[string]*prometheus.Desc {
@@ -46,6 +49,11 @@ func AddMetrics() map[string]*prometheus.Desc {
 	APIMetrics["Reset"] = prometheus.NewDesc(
 		prometheus.BuildFQName("github", "rate", "reset"),
 		"The time at which the current rate limit window resets in UTC epoch seconds",
+		[]string{}, nil,
+	)
+	APIMetrics["Downloads"] = prometheus.NewDesc(
+		prometheus.BuildFQName("github", "repo", "downloads"),
+		"The current download_count for a repo.",
 		[]string{}, nil,
 	)
 
